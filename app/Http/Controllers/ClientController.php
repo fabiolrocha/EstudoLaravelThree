@@ -12,7 +12,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::all();
+        $clients = Client::status()->get();
         return view('clients.index', compact('clients'));
     }
 
@@ -36,6 +36,7 @@ class ClientController extends Controller
             'email' => 'required|email|unique:clients,email',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
+            'logo' => 'sometimes|file|image|max:2048',
         ]);
 
         // Criação do cliente
@@ -47,6 +48,11 @@ class ClientController extends Controller
             'address' => $request->input('address'),
         ]);
 
+        if ($request->hasFile('logo')) {
+        $client->addMediaFromRequest('logo')->toMediaCollection('logos');
+        }
+
+
         return redirect()->route('clients.index')
             ->with('success', 'Cliente criado com sucesso!');
     }
@@ -56,7 +62,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
+        return view('clients.show', compact('client'));
     }
 
     /**
@@ -79,6 +85,7 @@ class ClientController extends Controller
             'email' => 'required|email|unique:clients,email,' . $client->id,
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
+            'logo' => 'sometimes|file|image|max:2048',
         ]);
 
         // Atualização do cliente
@@ -89,6 +96,11 @@ class ClientController extends Controller
             'phone' => $request->input('phone'),
             'address' => $request->input('address'),
         ]);
+
+        if ($request->hasFile('logo')) {
+        $client->clearMediaCollection('logos');
+        $client->addMediaFromRequest('logo')->toMediaCollection('logos');
+        }
 
         return redirect()->route('clients.index')
             ->with('success', 'Cliente atualizado com sucesso!');

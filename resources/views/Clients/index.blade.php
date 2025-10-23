@@ -29,11 +29,11 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($clients as $client)
                                 <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $client->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $client->contact_person }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $client->address }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $client->phone }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $client->email }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><a href="{{route('clients.show', $client->id)}}"> {{ $client->name }} </a></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><a href="{{route('clients.show', $client->id)}}"> {{ $client->contact_person }} </a></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><a href="{{route('clients.show', $client->id)}}"> {{ $client->address }} </a></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><a href="{{route('clients.show', $client->id)}}"> {{ $client->phone }} </a></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><a href="{{route('clients.show', $client->id)}}"> {{ $client->email }} </a></td>
                                 <td class="py-3 px-4 align-middle">
                                     <div class="flex gap-2 justify-center">
                                         <!-- Botão Edit -->

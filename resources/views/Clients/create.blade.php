@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <form action="{{route ('clients.store')}}" method="POST" class="space-y-6">
+                    <form action="{{route ('clients.store')}}" method="POST" enctype="multiparti/form-data" class="space-y-6">
                         @csrf
                         <div class="space-y-4">
                             <div>
@@ -39,6 +39,11 @@
                             <div>
                                 <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Address:</label>
                                 <input type="text" name="address" id="address" required 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="logo" class="block text-sm font-medium text-gray-700 mb-2">Logo:</label>
+                                <input type="file" name="logo" id="logo" 
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
                         </div>
