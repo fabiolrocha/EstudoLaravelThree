@@ -36,7 +36,6 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><a href="{{route('clients.show', $client->id)}}"> {{ $client->email }} </a></td>
                                 <td class="py-3 px-4 align-middle">
                                     <div class="flex gap-2 justify-center">
-                                        <!-- Botão Edit -->
                                         <a href="{{ route('clients.edit', $client) }}"
                                            class="inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
                                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,8 +43,6 @@
                                             </svg>
                                             Edit
                                         </a>
-                                        
-                                        <!-- Botão Delete -->
                                         <form method="POST" action="{{ route('clients.destroy', $client) }}" class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -60,7 +57,11 @@
                                         </form>
                                     </td>
                             </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">Nenhum cliente encontrado.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

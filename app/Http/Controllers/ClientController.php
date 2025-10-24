@@ -12,7 +12,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::status()->get();
+        $clients = Client::all();
         return view('clients.index', compact('clients'));
     }
 
@@ -29,7 +29,6 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        // Validação dos dados
         $request->validate([
             'name' => 'required|string|max:255',
             'contact_person' => 'required|string|max:255',
@@ -39,7 +38,6 @@ class ClientController extends Controller
             'logo' => 'sometimes|file|image|max:2048',
         ]);
 
-        // Criação do cliente
         $client = Client::create([
             'name' => $request->input('name'),
             'contact_person' => $request->input('contact_person'),
