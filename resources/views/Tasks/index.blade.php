@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-2xl font-semibold text-slate-900 tracking-tight">
-            {{ __('Projects') }}
+            {{ __('Tasks') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="mt-4">
-                        <a href="{{ route('projects.create') }}" type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold shadow hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mb-5">
+                        <a href="{{ route('tasks.create') }}" type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold shadow hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mb-5">
                             Create
                         </a>
                     </div>
@@ -27,21 +27,21 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse($projects as $project)
+                            @forelse($tasks as $task)
                                 <tr class="hover:bg-indigo-50/50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"><a class="hover:text-indigo-700" href="{{ route('projects.show', $project->id) }}">{{ $project->id }}</a></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"><a class="hover:text-indigo-700" href="{{ route('tasks.show', $task->id) }}">{{ $task->id }}</a></td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-slate-900"><a class="hover:text-indigo-700" href="{{ route('projects.show', $project->id) }}">{{ $project->name }}</a></div>
-                                        <div class="text-sm text-slate-500"><a class="hover:text-indigo-700" href="{{ route('projects.show', $project->id) }}">{{ Str::limit($project->description, 60) }}</a></div>
+                                        <div class="text-sm font-medium text-slate-900"><a class="hover:text-indigo-700" href="{{ route('tasks.show', $task->id) }}">{{ $task->title }}</a></div>
+                                        <div class="text-sm text-slate-500"><a class="hover:text-indigo-700" href="{{ route('tasks.show', $task->id) }}">{{ Str::limit($task->description, 60) }}</a></div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700"><a class="hover:text-indigo-700" href="{{ route('projects.show', $project->id) }}">{{ $project->client->name}}</a></td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700"><a class="hover:text-indigo-700" href="{{ route('projects.show', $project->id) }}">{{ $project->deadline }}</a></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700"><a class="hover:text-indigo-700" href="{{ route('tasks.show', $task->id) }}">{{ $task->project->name}}</a></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700"><a class="hover:text-indigo-700" href="{{ route('tasks.show', $task->id) }}">{{ $task->deadline }}</a></td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800"><a class="hover:text-indigo-700" href="{{ route('projects.show', $project->id) }}">{{ $project->status }}</a></span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800"><a class="hover:text-indigo-700" href="{{ route('tasks.show', $task->id) }}">{{ $task->status }}</a></span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="{{ route('projects.edit', $project) }}" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-600 text-white text-xs font-medium shadow hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mr-2">Editar</a>
-                                        <form action="{{ route('projects.destroy', $project) }}" method="POST" class="inline-block" onsubmit="return confirm('Excluir este projeto?');">
+                                        <a href="{{ route('tasks.edit', $task) }}" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-600 text-white text-xs font-medium shadow hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mr-2">Editar</a>
+                                        <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline-block" onsubmit="return confirm('Excluir esta tarefa?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-600 text-white text-xs font-medium shadow hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">Excluir</button>
@@ -50,7 +50,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="px-6 py-8 text-center text-slate-500">Nenhum projeto encontrado.</td>
+                                    <td colspan="6" class="px-6 py-8 text-center text-slate-500">Nenhuma tarefa encontrado.</td>
                                 </tr>
                             @endforelse
                         </tbody>

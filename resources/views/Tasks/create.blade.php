@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-2xl font-semibold text-slate-900 tracking-tight">
-            {{('Create Projects') }}
+            {{('Create Tasks') }}
         </h2>
     </x-slot>
 
@@ -9,29 +9,27 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white/90 backdrop-blur overflow-hidden shadow-sm ring-1 ring-gray-200 rounded-xl">
                 <div class="p-6">
-                    <form action="{{route ('projects.store')}}" method="POST" enctype="multiparti/form-data" class="space-y-6">
+                    <form action="{{route ('tasks.store')}}" method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
                         <div class="space-y-4">
                             <div>
-                                <label for="client_id" class="block text-sm font-medium text-slate-700 mb-2">Client:</label>
-                                <select name="client_id" id="client_id" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                                    @foreach($clients as $client)
-                                    <option value="{{ $client->id }}">{{ $client->name }}</option>
+                                <label for="title" class="block text-sm font-medium text-slate-700">Title</label>
+                                <input type="text" name="title" id="title" required
+                                    class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label for="description" class="block text-sm font-medium text-slate-700">Description</label>
+                                <textarea name="description" id="description" rows="4" required
+                                    class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div>
+                                <label for="project_id" class="block text-sm font-medium text-slate-700">Project</label>
+                                <select name="project_id" id="project_id" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    @foreach($projects as $project)
+                                    <option value="{{ $project->id }}">{{ $project->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-slate-700 mb-2">Project Name:</label>
-                                <input type="text" name="name" id="name" required
-                                    class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            </div>
-
-                            <div>
-                                <label for="description" class="block text-sm font-medium text-slate-700 mb-2">Description:</label>
-                                <textarea type="text" name="description" id="description" required
-                                    class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
-                            </div>
-
                             <div>
                                 <label for="status" class="block text-sm font-medium text-slate-700 mb-2">Status:</label>
                                 <select name="status" id="status" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -42,10 +40,9 @@
                                     <option value="cancelled">Cancelled</option>
                                 </select>
                             </div>
-
                             <div>
                                 <label for="deadline" class="block text-sm font-medium text-slate-700 mb-2">Deadline:</label>
-                                <input type="date" name="deadline" id="deadline" min="{{ date('Y-m-d') }}"
+                                <input type="date" name="deadline" id="deadline" min="{{ date('Y-m-d') }}" required
                                     class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
 
@@ -62,4 +59,5 @@
             </div>
         </div>
     </div>
+
 </x-app-layout>
