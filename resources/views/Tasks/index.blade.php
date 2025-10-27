@@ -20,7 +20,7 @@
                             <tr>
                                 <th class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">#</th>
                                 <th class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Nome</th>
-                                <th class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Cliente</th>
+                                <th class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Projeto</th>
                                 <th class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Prazo</th>
                                 <th class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-3 text-right text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Ações</th>

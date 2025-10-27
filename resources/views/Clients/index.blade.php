@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="p-6">
+            
                 <div class="mt-4">
                     <a href="{{ route('clients.create') }}" type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold shadow hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mb-5">
                         Create
@@ -67,7 +67,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            
         </div>
     </div>
 </x-app-layout>
