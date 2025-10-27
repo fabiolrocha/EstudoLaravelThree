@@ -1,10 +1,4 @@
 <x-app-layout>
-	<x-slot name="header">
-		<h2 class="text-2xl font-semibold text-slate-900 tracking-tight">
-			{{ $task->title ?? 'Task' }}
-		</h2>
-	</x-slot>
-
 	<div class="py-6">
 		<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 			<div class="bg-white/90 backdrop-blur overflow-hidden shadow-sm ring-1 ring-gray-200 rounded-xl">
@@ -18,9 +12,9 @@
 								<div>
 									<h4 class="text-sm font-medium text-slate-600">Projeto</h4>
 									@if($task->project)
-										<p class="text-slate-800"><a href="{{ route('projects.show', $task->project) }}" class="text-indigo-600 hover:text-indigo-700">{{ $task->project->name }}</a></p>
+									<p class="text-slate-800"><a href="{{ route('projects.show', $task->project) }}" class="text-indigo-600 hover:text-indigo-700">{{ $task->project->name }}</a></p>
 									@else
-										<p class="text-slate-800">—</p>
+									<p class="text-slate-800">—</p>
 									@endif
 								</div>
 
@@ -51,7 +45,12 @@
 									<button type="submit" class="w-full px-4 py-2 rounded-md bg-red-600 text-white text-sm font-medium shadow hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">Excluir</button>
 								</form>
 
-								<a href="{{ route('tasks.index') }}" class="block text-center px-4 py-2 rounded-md bg-gray-200 text-gray-800 text-sm font-medium hover:bg-gray-300">Voltar</a>
+								<a href="{{ route('projects.index') }}" class="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-md bg-slate-600 text-white text-sm font-medium shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+									</svg>
+									<span>Voltar</span>
+								</a>
 							</div>
 						</div>
 					</div>
