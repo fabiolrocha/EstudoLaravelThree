@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Models\User;
 
 class Client extends Model implements HasMedia
 {
@@ -21,16 +22,15 @@ class Client extends Model implements HasMedia
      */
     protected $fillable = [
         'name',
-        'contact_person',
+        'contact_user_id',
         'email',
-        'phone',
         'address',
         'status',
     ];
 
-    public function scopeStatus($query)
+    public function contactUser()
     {
-        return $query->where('status', true);
+        return $this->belongsTo(User::class, 'contact_user_id');
     }
 
     protected function createdAt()

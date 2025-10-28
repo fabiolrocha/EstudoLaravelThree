@@ -5,17 +5,38 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $projects = Project::all();
-        return view('projects.index', compact('projects'));
+{
+    $user = Auth::user();
+
+    if (!$user) {
+         abort(403);
     }
+
+    $query = Project::query()->with('client.contactUser'); 
+
+    if ($user->hasRole('manager')) { 
+        $query->where('client_id', $user->clientManaged?->id);
+
+
+    } elseif ($user->hasRole('user')) { 
+        $query->whereHas('tasks', function ($taskQuery) use ($user) {
+            $taskQuery->where('assigned_user_id', $user->id); 
+        });
+    }
+
+    $projects = $query->paginate(15);
+
+    return view('projects.index', compact('projects'));
+}
 
     /**
      * Show the form for creating a new resource.
@@ -37,12 +58,12 @@ class ProjectController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'deadline' => 'nullable|date|after_or_equal:today',
-            'status' => 'required|string|in:pending,in_progress,completed,,cancelled',
+            'status' => 'required|string|in:pending,in_progress,completed,cancelled',
             'client_id' => 'required|exists:clients,id',
         ]);
 
         Project::create([
-            
+
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'deadline' => $request->input('deadline'),
@@ -76,17 +97,17 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'deadline' => 'nullable|date|after_or_equal:today',
-            'status' => 'required|string|in:pending,in_progress,completed,,cancelled',
+            'status' => 'required|string|in:pending,in_progress,completed,cancelled',
             'client_id' => 'required|exists:clients,id',
         ]);
 
         $project->update([
-            
+
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'deadline' => $request->input('deadline'),

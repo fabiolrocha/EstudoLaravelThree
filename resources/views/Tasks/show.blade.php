@@ -37,6 +37,7 @@
 
 						<div class="w-48 flex-shrink-0">
 							<div class="space-y-2">
+
 								<a href="{{ route('tasks.edit', $task) }}" class="block text-center px-4 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium shadow hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Editar</a>
 
 								<form action="{{ route('tasks.destroy', $task) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir esta tarefa?');">

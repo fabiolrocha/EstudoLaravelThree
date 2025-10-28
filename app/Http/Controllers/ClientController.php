@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class ClientController extends Controller
 {
@@ -12,7 +13,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::all();
+        $clients = Client::with('contactUser')->get();
         return view('clients.index', compact('clients'));
     }
 
@@ -21,7 +22,8 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('clients.create');
+        $managers = User::role('manager')->get();
+        return view('clients.create', compact('managers'));
     }
 
     /**
@@ -31,18 +33,16 @@ class ClientController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'contact_person' => 'required|string|max:255',
+            'contact_user_id' => ['nullable', 'exists:users,id'],
             'email' => 'required|email|unique:clients,email',
-            'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
             'logo' => 'sometimes|file|image|max:2048',
         ]);
 
         $client = Client::create([
             'name' => $request->input('name'),
-            'contact_person' => $request->input('contact_person'),
+            'contact_user_id' => $request->input('contact_user_id'),
             'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
             'address' => $request->input('address'),
         ]);
 
@@ -68,7 +68,8 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        return view('clients.edit', compact('client'));
+        $managers = User::role('manager')->get();
+        return view('clients.edit', compact('client', 'managers'));
     }
 
     /**
@@ -79,7 +80,7 @@ class ClientController extends Controller
         // Validação dos dados
         $request->validate([
             'name' => 'required|string|max:255',
-            'contact_person' => 'required|string|max:255',
+            'contact_user_id' => ['nullable', 'exists:users,id'],
             'email' => 'required|email|unique:clients,email,' . $client->id,
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
@@ -89,7 +90,7 @@ class ClientController extends Controller
         // Atualização do cliente
         $client->update([
             'name' => $request->input('name'),
-            'contact_person' => $request->input('contact_person'),
+            'contact_user_id' => $request->input('contact_user_id'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
             'address' => $request->input('address'),

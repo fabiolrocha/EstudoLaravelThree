@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\User;
 
 
 class Task extends Model
@@ -21,11 +22,22 @@ class Task extends Model
 
     protected $fillable = [
         'title',
+        'assigned_user_id',
         'description',
         'deadline',
         'status',
         'project_id',
     ];
+
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_user_id');
+    }
+
+    public function scopeStatus($query)
+    {
+        return $query->where('status', true);
+    }
 
     protected function createdAt()
     {

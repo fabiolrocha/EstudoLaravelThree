@@ -4,14 +4,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="mt-6 mb-4 flex items-center justify-between gap-3">
                 <h2 class="text-2xl font-semibold text-slate-900 tracking-tight">
-                    {{ __('CLIENTS') }}
+                    {{ __('COMPANIES') }}
                 </h2>
+                
                 <a href="{{ route('clients.create') }}" type="button" class="group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold shadow-md hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition">
                     <svg class="h-4 w-4 opacity-90 group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
                     Create
                 </a>
+                
             </div>
             <div class="bg-white/90 backdrop-blur overflow-hidden shadow-sm ring-1 ring-gray-200 rounded-xl">
                 <div class="overflow-x-auto">
@@ -22,7 +24,6 @@
                                 <th scope="col" class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Company Name</th>
                                 <th scope="col" class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Contact Person</th>
                                 <th scope="col" class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Address</th>
-                                <th scope="col" class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Phone</th>
                                 <th scope="col" class="px-6 py-3 text-left text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Email</th>
                                 <th scope="col" class="px-6 py-3 text-center text-[11px] font-semibold text-slate-600 uppercase tracking-wider">Actions</th>
                             </tr>
@@ -32,9 +33,8 @@
                             <tr class="hover:bg-indigo-50/50 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"><a class="hover:text-indigo-700" href="{{route('clients.show', $client->id)}}"> {{ $client->id }} </a></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900"><a class="hover:text-indigo-700" href="{{route('clients.show', $client->id)}}"> {{ $client->name }} </a></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700"><a class="hover:text-indigo-700" href="{{route('clients.show', $client->id)}}"> {{ $client->contact_person }} </a></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700"><a class="hover:text-indigo-700" href="{{route('clients.show', $client->id)}}"> {{ $client->contactUser?->name ?? 'N/A' }} </a></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700"><a class="hover:text-indigo-700" href="{{route('clients.show', $client->id)}}"> {{ $client->address }} </a></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700"><a class="hover:text-indigo-700" href="{{route('clients.show', $client->id)}}"> {{ $client->phone }} </a></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700"><a class="hover:text-indigo-700" href="{{route('clients.show', $client->id)}}"> {{ $client->email }} </a></td>
                                 <td class="py-3 px-4 align-middle">
                                     <div class="flex gap-2 justify-center">

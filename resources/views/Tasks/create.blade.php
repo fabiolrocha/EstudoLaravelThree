@@ -28,6 +28,17 @@
                                     class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
                             </div>
                             <div>
+                                <label for="assigned_user_id" class="block text-sm font-medium text-slate-700">Assigned To</label>
+                                <select name="assigned_user_id" id="assigned_user_id" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    <option value="">-- Not Assigned --</option>
+                                    @foreach ($assignableUsers as $assignee)
+                                    <option value="{{ $assignee->id }}" {{ old('assigned_user_id') == $assignee->id ? 'selected' : '' }}>
+                                        {{ $assignee->name }} ({{ $assignee->email }})  
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
                                 <label for="project_id" class="block text-sm font-medium text-slate-700">Project</label>
                                 <select name="project_id" id="project_id" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     @foreach($projects as $project)

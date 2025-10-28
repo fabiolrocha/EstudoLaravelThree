@@ -19,7 +19,7 @@
                         @csrf
                         <div class="space-y-4">
                             <div>
-                                <label for="client_id" class="block text-sm font-medium text-slate-700 mb-2">Client:</label>
+                                <label for="client_id" class="block text-sm font-medium text-slate-700 mb-2">Company:</label>
                                 <select name="client_id" id="client_id" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                     @foreach($clients as $client)
                                     <option value="{{ $client->id }}">{{ $client->name }}</option>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\User;
 use App\Notifications\NewTaskNotification;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -15,7 +16,29 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
+        $user = Auth::user();
+
+        if (!$user) {
+            abort(403);
+        }
+
+
+        $query = Task::query()->with(['project.client', 'assignedUser']);
+
+
+        if ($user->hasRole ('manager')) {
+
+            $query->whereHas('project', function ($projectQuery) use ($user) {
+
+                $projectQuery->where('client_id', $user->clientManaged?->id);
+            });
+        } elseif ($user->hasRole('user')) {
+
+            $query->where('assigned_user_id', $user->id);
+        }
+
+        $tasks = $query->paginate(15);
+
         return view('tasks.index', compact('tasks'));
     }
 
@@ -24,8 +47,9 @@ class TaskController extends Controller
      */
     public function create()
     {
+        $assignableUsers = User::role(['admin', 'user'])->get();
         $projects = Project::all();
-        return view('tasks.create', compact('projects'));
+        return view('tasks.create', compact('projects', 'assignableUsers'));
     }
 
     /**
@@ -36,6 +60,7 @@ class TaskController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'assigned_user_id' => ['nullable', 'exists:users,id'],
             'deadline' => 'required|date',
             'status' => 'required|string|max:50',
             'project_id' => 'required|exists:projects,id',
@@ -44,6 +69,7 @@ class TaskController extends Controller
         $task = Task::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
+            'assigned_user_id' => $request->input('assigned_user_id'),
             'deadline' => $request->input('deadline'),
             'status' => $request->input('status'),
             'project_id' => $request->input('project_id'),
@@ -72,8 +98,9 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
+        $assignableUsers = User::role(['admin', 'user'])->get();
         $projects = Project::all();
-        return view('tasks.edit', compact('projects', 'task'));
+        return view('tasks.edit', compact('projects', 'task', 'assignableUsers'));
     }
 
     /**
@@ -83,6 +110,7 @@ class TaskController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'assigned_user_id' => ['nullable', 'exists:users,id'],
             'description' => 'required|string',
             'deadline' => 'required|date',
             'status' => 'required|string|max:50',
@@ -92,6 +120,7 @@ class TaskController extends Controller
         $task->update([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
+            'assigned_user_id' => $request->input('assigned_user_id'),
             'deadline' => $request->input('deadline'),
             'status' => $request->input('status'),
             'project_id' => $request->input('project_id'),
