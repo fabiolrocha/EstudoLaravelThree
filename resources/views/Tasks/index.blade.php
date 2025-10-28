@@ -8,12 +8,14 @@
                     {{ __('TASKS') }}
                 </h2>
                 
+                @role('admin|manager')
                 <a href="{{ route('tasks.create') }}" type="button" class="group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold shadow-md hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition">
                     <svg class="h-4 w-4 opacity-90 group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
                     Create
                 </a>
+                @endrole
                 
             </div>
 
@@ -46,12 +48,16 @@
                                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800"><a class="hover:text-indigo-700" href="{{ route('tasks.show', $task->id) }}">{{ $task->status }}</a></span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    @can('update', $task)
                                     <a href="{{ route('tasks.edit', $task) }}" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-600 text-white text-xs font-medium shadow hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 mr-2">Editar</a>
+                                    @endcan
+                                    @can('delete', $task)
                                     <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline-block" onsubmit="return confirm('Excluir esta tarefa?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-600 text-white text-xs font-medium shadow hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">Excluir</button>
                                     </form>
+                                    @endcan
                                 </td>
                             </tr>
                             @empty

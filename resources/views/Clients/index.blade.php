@@ -7,13 +7,14 @@
                     {{ __('COMPANIES') }}
                 </h2>
                 
+                @role('admin')
                 <a href="{{ route('clients.create') }}" type="button" class="group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold shadow-md hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition">
                     <svg class="h-4 w-4 opacity-90 group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                     </svg>
                     Create
                 </a>
-                
+                @endrole
             </div>
             <div class="bg-white/90 backdrop-blur overflow-hidden shadow-sm ring-1 ring-gray-200 rounded-xl">
                 <div class="overflow-x-auto">
@@ -38,6 +39,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-700"><a class="hover:text-indigo-700" href="{{route('clients.show', $client->id)}}"> {{ $client->email }} </a></td>
                                 <td class="py-3 px-4 align-middle">
                                     <div class="flex gap-2 justify-center">
+                                        @can('update', $client)
                                         <a href="{{ route('clients.edit', $client) }}"
                                             class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-600 text-white text-xs font-medium shadow hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
                                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,6 +47,8 @@
                                             </svg>
                                             Edit
                                         </a>
+                                        @endcan
+                                        @can('delete', $client)
                                         <form method="POST" action="{{ route('clients.destroy', $client) }}" class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -57,6 +61,7 @@
                                                 Delete
                                             </button>
                                         </form>
+                                        @endcan
                                 </td>
                             </tr>
                             @empty
