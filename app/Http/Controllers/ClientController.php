@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -13,7 +14,21 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::with('contactUser')->get();
+        $this->authorize('viewAny', Client::class);
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if ($user->hasRole('admin')) {
+            $clients = Client::with('contactUser')->get();
+        } elseif ($user->hasRole('manager')) {
+            $clients = Client::with('contactUser')
+                ->where('id', $user->clientManaged?->id)
+                ->get();
+        } else {
+            abort(403);
+        }
+
         return view('clients.index', compact('clients'));
     }
 
@@ -22,6 +37,7 @@ class ClientController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Client::class);
         $managers = User::role('manager')->get();
         return view('clients.create', compact('managers'));
     }
@@ -31,6 +47,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Client::class);
         $request->validate([
             'name' => 'required|string|max:255',
             'contact_user_id' => ['nullable', 'exists:users,id'],
@@ -60,6 +77,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
+        $this->authorize('view', $client);
         return view('clients.show', compact('client'));
     }
 
@@ -68,6 +86,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
+        $this->authorize('update', $client);
         $managers = User::role('manager')->get();
         return view('clients.edit', compact('client', 'managers'));
     }
@@ -77,7 +96,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        // Validação dos dados
+        $this->authorize('update', $client);
         $request->validate([
             'name' => 'required|string|max:255',
             'contact_user_id' => ['nullable', 'exists:users,id'],
@@ -87,7 +106,6 @@ class ClientController extends Controller
             'logo' => 'sometimes|file|image|max:2048',
         ]);
 
-        // Atualização do cliente
         $client->update([
             'name' => $request->input('name'),
             'contact_user_id' => $request->input('contact_user_id'),
@@ -110,6 +128,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
+        $this->authorize('delete', $client);
         $client->delete();
         return redirect()->route('clients.index')
             ->with('success', 'Cliente excluído com sucesso!');

@@ -4,20 +4,15 @@ namespace App\Policies;
 
 use App\Models\Client;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
-class CLientPolicy
+class ClientPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        return false;
+        return $user->hasRole(['admin', 'manager']);
     }
 
     /**
@@ -27,11 +22,11 @@ class CLientPolicy
     {
         if ($user->hasRole('admin')) {
             return true;
-        }   
+        }
 
-        if ($user->hasRole('maneger')) {
+        if ($user->hasRole('manager')) {
             return $user->clientManaged && $user->clientManaged->id === $client->id;
-        }   
+        }
 
         return false;
     }
@@ -41,11 +36,7 @@ class CLientPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        return false;
+        return $user->hasRole('admin');
     }
 
     /**
@@ -53,11 +44,9 @@ class CLientPolicy
      */
     public function update(User $user, Client $client): bool
     {
-
         if ($user->hasRole('admin')) {
             return true;
         }
-
         return false;
     }
 
@@ -66,12 +55,7 @@ class CLientPolicy
      */
     public function delete(User $user, Client $client): bool
     {
-
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        return false;
+        return $user->hasRole('admin');
     }
 
     /**

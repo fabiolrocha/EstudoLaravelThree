@@ -18,6 +18,11 @@ class Project extends Model
         return $this->belongsTo(Client::class);
     }
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
     protected $fillable = [
         'name',
         'description',

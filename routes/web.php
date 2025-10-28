@@ -6,6 +6,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -19,34 +20,23 @@ Route::middleware('auth')->group(function () {
 
 });
 
+
 Route::middleware(['auth', 'verified'])->group(function () {
-    
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    Route::resource('projects', ProjectController::class);
-    Route::resource('tasks', TaskController::class);
-
-});
-
-
-Route::middleware(['auth', 'verified', 'role:manager'])->group(function () {
-
-    Route::resource('projects', ProjectController::class);
-    Route::resource('tasks', TaskController::class);
-    Route::resource('clients', ClientController::class);    
-
-
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-
-    Route::resource('clients', ClientController::class);
-
     Route::resource('users', UserController::class);
+});
 
+
+Route::middleware(['auth', 'verified', 'role:admin|manager'])->group(function () {
+    Route::resource('clients', ClientController::class);
+});
+
+
+Route::middleware(['auth', 'verified', 'role:admin|manager|user'])->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('tasks', TaskController::class);
 });

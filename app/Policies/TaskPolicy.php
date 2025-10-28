@@ -30,7 +30,7 @@ class TaskPolicy
         }
 
         if ($user->hasRole('user')) {
-            return $task->assigned_to === $user->id;
+            return $task->assigned_user_id === $user->id;
         }
 
         return false;
