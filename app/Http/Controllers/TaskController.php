@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\User;
+use App\Notifications\NewTaskNotification;
 
 class TaskController extends Controller
 {
@@ -46,6 +48,12 @@ class TaskController extends Controller
             'status' => $request->input('status'),
             'project_id' => $request->input('project_id'),
         ]);
+
+        $admin = User::role('admin')->first();
+
+        if ($admin) {
+            $admin->notify(new NewTaskNotification($task));
+        }
 
         return redirect()->route('tasks.index')
             ->with('success', 'Tarefa criada com sucesso!');

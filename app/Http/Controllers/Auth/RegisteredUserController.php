@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeEmail;
 
 class RegisteredUserController extends Controller
 {
@@ -41,7 +43,12 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
+            'email_verified_at' => now(),
         ]);
+
+        $user->assignRole('user');
+
+        Mail::to($user->email)->send(new WelcomeEmail($user));
 
         event(new Registered($user));
 
